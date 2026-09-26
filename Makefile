@@ -4,7 +4,7 @@ COMPOSE := docker compose -f $(COMPOSE_FILE)
 .PHONY: up restart down delete
 
 up:
-	$(COMPOSE) up -d
+	$(COMPOSE) up
 
 restart:
 	$(COMPOSE) down

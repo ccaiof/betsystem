@@ -3,7 +3,7 @@ tmp_dir = "tmp"
 
 [build]
 cmd = "go build -o ./tmp/betsystem ./cmd/betsystem"
-bin = "./tmp/betsystem"
+entrypoint = "./tmp/betsystem"
 full_bin = "./tmp/betsystem"
 include_ext = ["go"]
 exclude_dir = ["tmp", "vendor", ".git"]
