@@ -1,4 +1,28 @@
 services:
+  ministack:
+    image: ministackorg/ministack:1.5
+    container_name: betsystem-ministack
+    environment:
+      PERSIST_STATE: 1
+      LOG_LEVEL: INFO
+      MINISTACK_REGION: us-east-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - ministack_data:/tmp/ministack-state
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:4566/_ministack/health')"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
   keycloak:
     image: quay.io/keycloak/keycloak:26.3
     container_name: betsystem-keycloak
@@ -37,6 +61,8 @@ services:
     depends_on:
       keycloak:
         condition: service_healthy
+      ministack:
+        condition: service_healthy
     volumes:
       - ..:/app
       - go_cache:/go
@@ -44,3 +70,4 @@ services:
 volumes:
   keycloak_data:
   go_cache:
+  ministack_data:
