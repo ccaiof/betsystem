@@ -1,6 +1,9 @@
 package http
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/betsystem/internal/adapters/http/handlers"
+	"github.com/gin-gonic/gin"
+)
 
 func NewRouter() *gin.Engine {
 	router := gin.New()
@@ -8,11 +11,7 @@ func NewRouter() *gin.Engine {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	router.GET("/health", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"status": "ok",
-		})
-	})
+	router.GET("/health", handlers.HealthHandler)
 
 	return router
 }
