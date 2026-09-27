@@ -3,6 +3,10 @@ FROM golang:1.27.1-alpine AS development
 RUN apk add --no-cache git
 
 RUN go install github.com/air-verse/air@latest
+RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+
+RUN apk update && apk upgrade && apk add --update alpine-sdk && \
+    apk add --no-cache bash git openssh make cmake 
 
 WORKDIR /app
 
