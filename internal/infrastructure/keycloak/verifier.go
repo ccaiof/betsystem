@@ -13,15 +13,9 @@ type Verifier struct {
 }
 
 func NewVerifier(
-	config Config,
-	ctx context.Context,
+	config *Config,
+	provider *oidc.Provider,
 ) (*Verifier, error) {
-
-	provider, err := oidc.NewProvider(ctx, config.Issuer)
-	if err != nil {
-		return nil, fmt.Errorf("create oidc provider: %w", err)
-	}
-
 	verifier := provider.Verifier(&oidc.Config{
 		ClientID: config.ClientID,
 	})

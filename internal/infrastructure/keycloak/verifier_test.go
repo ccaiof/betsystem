@@ -27,7 +27,7 @@ func TestVerifier_VerifyProviderToken(t *testing.T) {
 		t.Fatal("Keycloak test credentials are not set")
 	}
 
-	config := Config{
+	config := &Config{
 		Issuer:   issuer,
 		ClientID: os.Getenv("KEYCLOAK_CLIENT_ID"),
 	}
@@ -46,7 +46,13 @@ func TestVerifier_VerifyProviderToken(t *testing.T) {
 		clientSecret,
 	)
 
-	verifier, err := NewVerifier(config, ctx)
+	provider, err := NewProvider(config)
+	require.NoError(t, err)
+
+	verifier, err := NewVerifier(
+		config,
+		provider,
+	)
 	require.NoError(t, err)
 
 	identity, err := verifier.Verify(ctx, token)

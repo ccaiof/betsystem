@@ -6,7 +6,7 @@ import (
 	"github.com/coreos/go-oidc"
 )
 
-func NewProvider(config Config) (*oidc.Provider, error) {
+func NewProvider(config *Config) (*oidc.Provider, error) {
 	return oidc.NewProvider(
 		context.Background(),
 		config.Issuer,
