@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"context"
 
-	httpapi "github.com/betsystem/internal/adapters/http"
+	httpapi "github.com/betsystem/internal/presentation/http"
 	"go.uber.org/fx"
 )
 

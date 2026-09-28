@@ -1,8 +1,8 @@
 package http
 
 import (
-	"github.com/betsystem/internal/adapters/http/handlers"
 	"github.com/betsystem/internal/infrastructure/postgres"
+	"github.com/betsystem/internal/presentation/http/handlers"
 	"github.com/gin-gonic/gin"
 )
 
