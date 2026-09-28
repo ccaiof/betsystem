@@ -7,5 +7,11 @@ import (
 
 var Module = fx.Module(
 	"postgres",
-	fx.Provide(NewConfig, NewDatabase, txmanager.New),
+
+	fx.Provide(
+		NewConfig,
+		NewDatabase,
+		txmanager.New,
+		NewHealthChecker,
+	),
 )

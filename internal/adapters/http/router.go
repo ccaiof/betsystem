@@ -2,16 +2,17 @@ package http
 
 import (
 	"github.com/betsystem/internal/adapters/http/handlers"
+	"github.com/betsystem/internal/infrastructure/postgres"
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter() *gin.Engine {
+func NewRouter(postgresHealth *postgres.HealthChecker) *gin.Engine {
 	router := gin.New()
 
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	router.GET("/health", handlers.HealthHandler)
+	handlers.HealthHandler(router, postgresHealth)
 
 	return router
 }
