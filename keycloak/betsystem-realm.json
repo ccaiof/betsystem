@@ -1,0 +1,152 @@
+{
+    "realm": "betsystem",
+    "enabled": true,
+    "displayName": "BetSystem",
+    "displayNameHtml": "<strong>BetSystem</strong>",
+    "roles": {
+        "realm": [
+            {
+                "name": "provider",
+                "description": "Access to provider-scoped wagering operations"
+            },
+            {
+                "name": "internal",
+                "description": "Access to internal wallet operations"
+            }
+        ]
+    },
+    "clients": [
+        {
+            "clientId": "betsystem-api",
+            "name": "BetSystem API",
+            "description": "OAuth2/OIDC resource server audience",
+            "enabled": true,
+            "protocol": "openid-connect",
+            "publicClient": true,
+            "standardFlowEnabled": false,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": false,
+            "serviceAccountsEnabled": false,
+            "clientAuthenticatorType": "client-secret",
+            "protocolMappers": [
+                {
+                    "name": "betsystem-api-audience",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-audience-mapper",
+                    "config": {
+                        "included.client.audience": "betsystem-api",
+                        "id.token.claim": "false",
+                        "access.token.claim": "true"
+                    }
+                }
+            ]
+        },
+        {
+            "clientId": "provider-acme",
+            "name": "Provider ACME",
+            "description": "ACME betting provider",
+            "enabled": true,
+            "protocol": "openid-connect",
+            "publicClient": false,
+            "secret": "provider-acme-secret",
+            "clientAuthenticatorType": "client-secret",
+            "standardFlowEnabled": false,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": false,
+            "serviceAccountsEnabled": true,
+            "fullScopeAllowed": true,
+            "protocolMappers": [
+                {
+                    "name": "betsystem-api-audience",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-audience-mapper",
+                    "config": {
+                        "included.client.audience": "betsystem-api",
+                        "id.token.claim": "false",
+                        "access.token.claim": "true"
+                    }
+                }
+            ]
+        },
+        {
+            "clientId": "provider-demo",
+            "name": "Provider Demo",
+            "description": "Demo betting provider",
+            "enabled": true,
+            "protocol": "openid-connect",
+            "publicClient": false,
+            "secret": "provider-demo-secret",
+            "clientAuthenticatorType": "client-secret",
+            "standardFlowEnabled": false,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": false,
+            "serviceAccountsEnabled": true,
+            "fullScopeAllowed": true,
+            "protocolMappers": [
+                {
+                    "name": "betsystem-api-audience",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-audience-mapper",
+                    "config": {
+                        "included.client.audience": "betsystem-api",
+                        "id.token.claim": "false",
+                        "access.token.claim": "true"
+                    }
+                }
+            ]
+        },
+        {
+            "clientId": "betsystem-internal",
+            "name": "BetSystem Internal",
+            "description": "Internal service identity",
+            "enabled": true,
+            "protocol": "openid-connect",
+            "publicClient": false,
+            "secret": "betsystem-internal-secret",
+            "clientAuthenticatorType": "client-secret",
+            "standardFlowEnabled": false,
+            "implicitFlowEnabled": false,
+            "directAccessGrantsEnabled": false,
+            "serviceAccountsEnabled": true,
+            "fullScopeAllowed": true,
+            "protocolMappers": [
+                {
+                    "name": "betsystem-api-audience",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-audience-mapper",
+                    "config": {
+                        "included.client.audience": "betsystem-api",
+                        "id.token.claim": "false",
+                        "access.token.claim": "true"
+                    }
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "username": "service-account-provider-acme",
+            "enabled": true,
+            "serviceAccountClientId": "provider-acme",
+            "realmRoles": [
+                "provider"
+            ]
+        },
+        {
+            "username": "service-account-provider-demo",
+            "enabled": true,
+            "serviceAccountClientId": "provider-demo",
+            "realmRoles": [
+                "provider"
+            ]
+        },
+        {
+            "username": "service-account-betsystem-internal",
+            "enabled": true,
+            "serviceAccountClientId": "betsystem-internal",
+            "realmRoles": [
+                "internal"
+            ]
+        }
+    ]
+}
