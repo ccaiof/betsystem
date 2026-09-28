@@ -1,0 +1,25 @@
+info:
+  name: protocol/openid-connect/token
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{keycloakHost}}/realms/{{realm}}/protocol/openid-connect/token"
+  body:
+    type: form-urlencoded
+    data:
+      - name: grant_type
+        value: client_credentials
+      - name: client_id
+        value: "{{providerAcmeClientId}}"
+      - name: client_secret
+        value: "{{providerAcmeClientSecret}}"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

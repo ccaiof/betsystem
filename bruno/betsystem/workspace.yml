@@ -1,0 +1,14 @@
+opencollection: 1.0.0
+info:
+  name: "betsystem"
+  type: workspace
+
+collections:
+  - name: "authenticated"
+    path: "collections/authenticated"
+  - name: "public"
+    path: "collections/public"
+
+specs:
+
+docs: ''

@@ -1,0 +1,29 @@
+name: local
+variables:
+  - name: betsystemHost
+    value: https://localhost:8081
+    description: ""
+  - name: keycloakHost
+    value: http://localhost:8080
+    description: ""
+  - name: realm
+    value: betsystem
+    description: ""
+  - name: providerAcmeClientId
+    value: provider-acme
+    description: ""
+  - name: providerAcmeClientSecret
+    value: provider-acme-secret
+    description: ""
+  - name: providerDemoClientId
+    value: provider-demo
+    description: ""
+  - name: providerDemoClientSecret
+    value: provider-demo-secret
+    description: ""
+  - name: internalClientId
+    value: betsystem-internal
+    description: ""
+  - name: internalClientSecret
+    value: betsystem-internal-secret
+    description: ""
