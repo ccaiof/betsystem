@@ -101,7 +101,7 @@ func TestWagerTransaction_MarkProcessed(t *testing.T) {
 	wager := newExternalWager(t)
 	now := time.Now()
 
-	err := wager.MarkProcessed(now)
+	err := wager.MarkProcessed(wager.Amount, now)
 
 	require.NoError(t, err)
 	require.Equal(t, StatusProcessed, wager.Status)
@@ -156,7 +156,7 @@ func TestWagerTransaction_TerminalStateCannotTransition(t *testing.T) {
 
 		require.NoError(
 			t,
-			wager.MarkProcessed(time.Now()),
+			wager.MarkProcessed(wager.Amount, time.Now()),
 		)
 
 		err := wager.Reject(
@@ -176,7 +176,7 @@ func TestWagerTransaction_TerminalStateCannotTransition(t *testing.T) {
 			wager.Reject("TEST", time.Now()),
 		)
 
-		err := wager.MarkProcessed(time.Now())
+		err := wager.MarkProcessed(wager.Amount, time.Now())
 
 		require.ErrorIs(t, err, ErrTerminalState)
 		require.Equal(t, StatusRejected, wager.Status)
@@ -190,7 +190,7 @@ func TestWagerTransaction_TerminalStateCannotTransition(t *testing.T) {
 			wager.Fail("TEST", time.Now()),
 		)
 
-		err := wager.MarkProcessed(time.Now())
+		err := wager.MarkProcessed(wager.Amount, time.Now())
 
 		require.ErrorIs(t, err, ErrTerminalState)
 		require.Equal(t, StatusFailed, wager.Status)

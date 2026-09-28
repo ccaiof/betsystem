@@ -10,8 +10,8 @@ import (
 const scale = 100 // fixed 2 decimal places
 
 type Money struct {
-	amountMinor int64
-	currency    string
+	AmountMinor int64
+	Currency    string
 }
 
 func Zero(currency string) (Money, error) {
@@ -19,7 +19,7 @@ func Zero(currency string) (Money, error) {
 	if err != nil {
 		return Money{}, err
 	}
-	return Money{amountMinor: 0, currency: c}, nil
+	return Money{AmountMinor: 0, Currency: c}, nil
 }
 
 func FromMinor(amountMinor int64, currency string) (Money, error) {
@@ -27,7 +27,7 @@ func FromMinor(amountMinor int64, currency string) (Money, error) {
 	if err != nil {
 		return Money{}, err
 	}
-	return Money{amountMinor: amountMinor, currency: c}, nil
+	return Money{AmountMinor: amountMinor, Currency: c}, nil
 }
 
 func FromDecimalString(amount, currency string, allowNegative bool) (Money, error) {
@@ -93,7 +93,7 @@ func FromDecimalString(amount, currency string, allowNegative bool) (Money, erro
 		minor = -minor
 	}
 
-	return Money{amountMinor: minor, currency: c}, nil
+	return Money{AmountMinor: minor, Currency: c}, nil
 }
 
 func isDigitsAndDot(s string) bool {
@@ -128,14 +128,12 @@ func normalizeCurrency(currency string) (string, error) {
 	return c, nil
 }
 
-func (m Money) AmountMinor() int64 { return m.amountMinor }
-func (m Money) Currency() string   { return m.currency }
-func (m Money) IsZero() bool       { return m.amountMinor == 0 }
-func (m Money) IsNegative() bool   { return m.amountMinor < 0 }
+func (m Money) IsZero() bool     { return m.AmountMinor == 0 }
+func (m Money) IsNegative() bool { return m.AmountMinor < 0 }
 
 func (m Money) sameCurrency(other Money) error {
-	if m.currency != other.currency {
-		return fmt.Errorf("%w: %s vs %s", ErrCurrencyMismatch, m.currency, other.currency)
+	if m.Currency != other.Currency {
+		return fmt.Errorf("%w: %s vs %s", ErrCurrencyMismatch, m.Currency, other.Currency)
 	}
 	return nil
 }
@@ -144,11 +142,11 @@ func (m Money) Add(other Money) (Money, error) {
 	if err := m.sameCurrency(other); err != nil {
 		return Money{}, err
 	}
-	sum := m.amountMinor + other.amountMinor
-	if (other.amountMinor > 0 && sum < m.amountMinor) || (other.amountMinor < 0 && sum > m.amountMinor) {
+	sum := m.AmountMinor + other.AmountMinor
+	if (other.AmountMinor > 0 && sum < m.AmountMinor) || (other.AmountMinor < 0 && sum > m.AmountMinor) {
 		return Money{}, ErrOverflow
 	}
-	return Money{amountMinor: sum, currency: m.currency}, nil
+	return Money{AmountMinor: sum, Currency: m.Currency}, nil
 }
 
 func (m Money) Sub(other Money) (Money, error) {
@@ -161,13 +159,13 @@ func (m Money) Sub(other Money) (Money, error) {
 }
 
 func (m Money) Negate() (Money, error) {
-	if m.amountMinor == math.MinInt64 {
+	if m.AmountMinor == math.MinInt64 {
 		return Money{}, ErrOverflow
 	}
 
 	return Money{
-		amountMinor: -m.amountMinor,
-		currency:    m.currency,
+		AmountMinor: -m.AmountMinor,
+		Currency:    m.Currency,
 	}, nil
 }
 
@@ -176,9 +174,9 @@ func (m Money) Compare(other Money) (int, error) {
 		return 0, err
 	}
 	switch {
-	case m.amountMinor < other.amountMinor:
+	case m.AmountMinor < other.AmountMinor:
 		return -1, nil
-	case m.amountMinor > other.amountMinor:
+	case m.AmountMinor > other.AmountMinor:
 		return 1, nil
 	default:
 		return 0, nil
@@ -186,8 +184,8 @@ func (m Money) Compare(other Money) (int, error) {
 }
 
 func (m Money) String() string {
-	if m.amountMinor < 0 {
-		absolute := uint64(-(m.amountMinor + 1)) + 1
+	if m.AmountMinor < 0 {
+		absolute := uint64(-(m.AmountMinor + 1)) + 1
 
 		return fmt.Sprintf(
 			"-%d.%02d",
@@ -198,7 +196,7 @@ func (m Money) String() string {
 
 	return fmt.Sprintf(
 		"%d.%02d",
-		m.amountMinor/scale,
-		m.amountMinor%scale,
+		m.AmountMinor/scale,
+		m.AmountMinor%scale,
 	)
 }

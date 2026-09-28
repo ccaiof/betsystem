@@ -12,7 +12,7 @@ type Money struct {
 func NewMoneyResponse(value money.Money) Money {
 	return Money{
 		Amount:   value.String(),
-		Currency: value.Currency(),
+		Currency: value.Currency,
 	}
 }
 

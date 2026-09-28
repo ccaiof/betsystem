@@ -12,4 +12,10 @@ var (
 	ErrTerminalState = errors.New("wager: transaction is in a terminal state")
 
 	ErrFailureCodeRequired = errors.New("wager: failure code is required")
+
+	ErrWalletPlayerMismatch = errors.New(
+		"wager: wallet does not belong to player",
+	)
 )
+
+const FailureCodeInsufficientFunds = "INSUFFICIENT_FUNDS"

@@ -1,11 +1,16 @@
 COMPOSE_FILE := docker/docker-compose.dev.yml
 COMPOSE := docker compose -f $(COMPOSE_FILE)
 MIGRATIONS_DIR := internal/infrastructure/migrations
+APP_CONTAINER := betsystem-app
 
-.PHONY: up restart down delete migrate-up migrate-down migrate-status test test-v test-race
+EXEC_TEST := docker exec -w /app $(APP_CONTAINER) sh -c 'set -a && . ./.env.test && set +a &&
+
+.PHONY: up restart down delete \
+	migrate-up migrate-down migrate-status \
+	test test-v test-race test-integration
 
 up:
-	$(COMPOSE) up
+	$(COMPOSE) up -d
 
 restart:
 	$(COMPOSE) down
@@ -18,19 +23,25 @@ delete:
 	$(COMPOSE) down -v --remove-orphans
 
 migrate-up:
-	goose -dir $(MIGRATIONS_DIR) postgres "$(DB_URL)" up
+	docker exec $(APP_CONTAINER) sh -c \
+		'goose -dir $(MIGRATIONS_DIR) postgres "$$DB_URL" up'
 
 migrate-down:
-	goose -dir $(MIGRATIONS_DIR) postgres "$(DB_URL)" down
+	docker exec $(APP_CONTAINER) sh -c \
+		'goose -dir $(MIGRATIONS_DIR) postgres "$$DB_URL" down'
 
 migrate-status:
-	goose -dir $(MIGRATIONS_DIR) postgres "$(DB_URL)" status
+	docker exec $(APP_CONTAINER) sh -c \
+		'goose -dir $(MIGRATIONS_DIR) postgres "$$DB_URL" status'
 
 test:
-	bash -c 'set -a && source ./.env.test && set +a && go test ./...'
+	$(EXEC_TEST) go test -count=1 ./...'
 
 test-v:
-	bash -c 'set -a && source ./.env.test && set +a && go test ./... -v'
+	$(EXEC_TEST) go test -count=1 ./... -v'
 
 test-race:
-	bash -c 'set -a && source ./.env.test && set +a && go test ./... -race'
+	$(EXEC_TEST) go test -count=1 ./... -race'
+
+test-integration: up migrate-up
+	$(EXEC_TEST) go test -count=1 -p 1 ./tests/integration/...'

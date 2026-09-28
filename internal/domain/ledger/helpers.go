@@ -16,8 +16,8 @@ func validateCurrencies(
 	balanceBefore money.Money,
 	balanceAfter money.Money,
 ) error {
-	if amount.Currency() != balanceBefore.Currency() ||
-		amount.Currency() != balanceAfter.Currency() {
+	if amount.Currency != balanceBefore.Currency ||
+		amount.Currency != balanceAfter.Currency {
 		return ErrCurrencyMismatch
 	}
 
@@ -48,7 +48,7 @@ func validateBalanceFlow(
 		return err
 	}
 
-	if expected.AmountMinor() != balanceAfter.AmountMinor() {
+	if expected.AmountMinor != balanceAfter.AmountMinor {
 		return ErrInvalidBalanceFlow
 	}
 

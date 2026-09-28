@@ -7,10 +7,10 @@ import (
 )
 
 type Wallet struct {
-	id       uuid.UUID
-	playerID uuid.UUID
-	balance  money.Money
-	version  int64
+	ID       uuid.UUID
+	PlayerID uuid.UUID
+	Balance  money.Money
+	Version  int64
 }
 
 func New(id uuid.UUID, playerID uuid.UUID, currency string) (Wallet, error) {
@@ -20,31 +20,11 @@ func New(id uuid.UUID, playerID uuid.UUID, currency string) (Wallet, error) {
 	}
 
 	return Wallet{
-		id:       id,
-		playerID: playerID,
-		balance:  balance,
-		version:  0,
+		ID:       id,
+		PlayerID: playerID,
+		Balance:  balance,
+		Version:  1,
 	}, nil
-}
-
-func (w Wallet) ID() uuid.UUID {
-	return w.id
-}
-
-func (w Wallet) PlayerID() uuid.UUID {
-	return w.playerID
-}
-
-func (w Wallet) Balance() money.Money {
-	return w.balance
-}
-
-func (w Wallet) Currency() string {
-	return w.balance.Currency()
-}
-
-func (w Wallet) Version() int64 {
-	return w.version
 }
 
 func (w *Wallet) Credit(amount money.Money) error {
@@ -56,13 +36,13 @@ func (w *Wallet) Credit(amount money.Money) error {
 		return nil
 	}
 
-	balance, err := w.balance.Add(amount)
+	balance, err := w.Balance.Add(amount)
 	if err != nil {
 		return err
 	}
 
-	w.balance = balance
-	w.version++
+	w.Balance = balance
+	w.Version++
 
 	return nil
 }
@@ -76,7 +56,7 @@ func (w *Wallet) Debit(amount money.Money) error {
 		return nil
 	}
 
-	comparison, err := w.balance.Compare(amount)
+	comparison, err := w.Balance.Compare(amount)
 	if err != nil {
 		return err
 	}
@@ -85,7 +65,7 @@ func (w *Wallet) Debit(amount money.Money) error {
 		return ErrInsufficientFunds
 	}
 
-	result, err := w.balance.Sub(amount)
+	result, err := w.Balance.Sub(amount)
 	if err != nil {
 		return err
 	}
@@ -94,8 +74,8 @@ func (w *Wallet) Debit(amount money.Money) error {
 		return ErrInsufficientFunds
 	}
 
-	w.balance = result
-	w.version++
+	w.Balance = result
+	w.Version++
 
 	return nil
 }

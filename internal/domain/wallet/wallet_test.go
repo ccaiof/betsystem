@@ -20,11 +20,11 @@ func TestNew(t *testing.T) {
 
 	require.NoError(t, err)
 
-	require.Equal(t, walletID, wallet.ID())
-	require.Equal(t, playerID, wallet.PlayerID())
-	require.Equal(t, "BRL", wallet.Currency())
-	require.Equal(t, int64(0), wallet.Balance().AmountMinor())
-	require.Equal(t, int64(0), wallet.Version())
+	require.Equal(t, walletID, wallet.ID)
+	require.Equal(t, playerID, wallet.PlayerID)
+	require.Equal(t, "BRL", wallet.Balance.Currency)
+	require.Equal(t, int64(0), wallet.Balance.AmountMinor)
+	require.Equal(t, int64(0), wallet.Version)
 }
 
 func TestWallet_Credit(t *testing.T) {
@@ -41,8 +41,8 @@ func TestWallet_Credit(t *testing.T) {
 	err = wallet.Credit(amount)
 
 	require.NoError(t, err)
-	require.Equal(t, int64(1000), wallet.Balance().AmountMinor())
-	require.Equal(t, int64(1), wallet.Version())
+	require.Equal(t, int64(1000), wallet.Balance.AmountMinor)
+	require.Equal(t, int64(1), wallet.Version)
 }
 
 func TestWallet_CreditIncrementsVersion(t *testing.T) {
@@ -60,15 +60,15 @@ func TestWallet_CreditIncrementsVersion(t *testing.T) {
 	require.NoError(t, err)
 
 	require.NoError(t, wallet.Credit(first))
-	require.Equal(t, int64(1), wallet.Version())
+	require.Equal(t, int64(1), wallet.Version)
 
 	require.NoError(t, wallet.Credit(second))
-	require.Equal(t, int64(2), wallet.Version())
+	require.Equal(t, int64(2), wallet.Version)
 
 	require.Equal(
 		t,
 		int64(1500),
-		wallet.Balance().AmountMinor(),
+		wallet.Balance.AmountMinor,
 	)
 }
 
@@ -92,10 +92,10 @@ func TestWallet_Debit(t *testing.T) {
 	require.Equal(
 		t,
 		int64(700),
-		wallet.Balance().AmountMinor(),
+		wallet.Balance.AmountMinor,
 	)
 
-	require.Equal(t, int64(2), wallet.Version())
+	require.Equal(t, int64(2), wallet.Version)
 }
 
 func TestWallet_DebitInsufficientFunds(t *testing.T) {
@@ -121,10 +121,10 @@ func TestWallet_DebitInsufficientFunds(t *testing.T) {
 	require.Equal(
 		t,
 		int64(1000),
-		wallet.Balance().AmountMinor(),
+		wallet.Balance.AmountMinor,
 	)
 
-	require.Equal(t, int64(1), wallet.Version())
+	require.Equal(t, int64(1), wallet.Version)
 }
 
 func TestWallet_CreditRejectsDifferentCurrency(t *testing.T) {
@@ -145,10 +145,10 @@ func TestWallet_CreditRejectsDifferentCurrency(t *testing.T) {
 	require.Equal(
 		t,
 		int64(0),
-		wallet.Balance().AmountMinor(),
+		wallet.Balance.AmountMinor,
 	)
 
-	require.Equal(t, int64(0), wallet.Version())
+	require.Equal(t, int64(0), wallet.Version)
 }
 
 func TestWallet_DebitRejectsDifferentCurrency(t *testing.T) {
@@ -169,10 +169,10 @@ func TestWallet_DebitRejectsDifferentCurrency(t *testing.T) {
 	require.Equal(
 		t,
 		int64(0),
-		wallet.Balance().AmountMinor(),
+		wallet.Balance.AmountMinor,
 	)
 
-	require.Equal(t, int64(0), wallet.Version())
+	require.Equal(t, int64(0), wallet.Version)
 }
 
 func TestWallet_CreditRejectsNegativeAmount(t *testing.T) {
@@ -190,8 +190,8 @@ func TestWallet_CreditRejectsNegativeAmount(t *testing.T) {
 
 	require.ErrorIs(t, err, money.ErrNegativeNotAllowed)
 
-	require.Equal(t, int64(0), wallet.Balance().AmountMinor())
-	require.Equal(t, int64(0), wallet.Version())
+	require.Equal(t, int64(0), wallet.Balance.AmountMinor)
+	require.Equal(t, int64(0), wallet.Version)
 }
 
 func TestWallet_DebitRejectsNegativeAmount(t *testing.T) {
@@ -209,8 +209,8 @@ func TestWallet_DebitRejectsNegativeAmount(t *testing.T) {
 
 	require.ErrorIs(t, err, money.ErrNegativeNotAllowed)
 
-	require.Equal(t, int64(0), wallet.Balance().AmountMinor())
-	require.Equal(t, int64(0), wallet.Version())
+	require.Equal(t, int64(0), wallet.Balance.AmountMinor)
+	require.Equal(t, int64(0), wallet.Version)
 }
 
 func TestWallet_ZeroOperationDoesNotChangeVersion(t *testing.T) {
@@ -225,8 +225,8 @@ func TestWallet_ZeroOperationDoesNotChangeVersion(t *testing.T) {
 	require.NoError(t, err)
 
 	require.NoError(t, wallet.Credit(zero))
-	require.Equal(t, int64(0), wallet.Version())
+	require.Equal(t, int64(0), wallet.Version)
 
 	require.NoError(t, wallet.Debit(zero))
-	require.Equal(t, int64(0), wallet.Version())
+	require.Equal(t, int64(0), wallet.Version)
 }

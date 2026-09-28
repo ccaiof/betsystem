@@ -87,12 +87,14 @@ func NewOpening(
 }
 
 func (w *WagerTransaction) MarkProcessed(
+	balance money.Money,
 	now time.Time,
 ) error {
 	if err := w.transitionTo(StatusProcessed); err != nil {
 		return err
 	}
 
+	w.FinancialResultBalance = &balance
 	w.ProcessedAt = &now
 	w.UpdatedAt = now
 

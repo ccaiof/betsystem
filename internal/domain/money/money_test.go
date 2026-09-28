@@ -12,8 +12,8 @@ func TestZero(t *testing.T) {
 		value, err := Zero("brl")
 
 		require.NoError(t, err)
-		require.Equal(t, int64(0), value.AmountMinor())
-		require.Equal(t, "BRL", value.Currency())
+		require.Equal(t, int64(0), value.AmountMinor)
+		require.Equal(t, "BRL", value.Currency)
 		require.True(t, value.IsZero())
 		require.False(t, value.IsNegative())
 		require.Equal(t, "0.00", value.String())
@@ -31,8 +31,8 @@ func TestFromMinor(t *testing.T) {
 		value, err := FromMinor(12345, "BRL")
 
 		require.NoError(t, err)
-		require.Equal(t, int64(12345), value.AmountMinor())
-		require.Equal(t, "BRL", value.Currency())
+		require.Equal(t, int64(12345), value.AmountMinor)
+		require.Equal(t, "BRL", value.Currency)
 		require.Equal(t, "123.45", value.String())
 	})
 
@@ -40,7 +40,7 @@ func TestFromMinor(t *testing.T) {
 		value, err := FromMinor(-12345, "BRL")
 
 		require.NoError(t, err)
-		require.Equal(t, int64(-12345), value.AmountMinor())
+		require.Equal(t, int64(-12345), value.AmountMinor)
 		require.True(t, value.IsNegative())
 		require.Equal(t, "-123.45", value.String())
 	})
@@ -123,9 +123,9 @@ func TestFromDecimalString(t *testing.T) {
 			)
 
 			require.NoError(t, err)
-			require.Equal(t, tt.wantMinor, value.AmountMinor())
+			require.Equal(t, tt.wantMinor, value.AmountMinor)
 			require.Equal(t, tt.wantString, value.String())
-			require.Equal(t, "BRL", value.Currency())
+			require.Equal(t, "BRL", value.Currency)
 		})
 	}
 }
@@ -149,7 +149,7 @@ func TestFromDecimalString_Negative(t *testing.T) {
 		)
 
 		require.NoError(t, err)
-		require.Equal(t, int64(-1050), value.AmountMinor())
+		require.Equal(t, int64(-1050), value.AmountMinor)
 	})
 }
 
@@ -211,14 +211,14 @@ func TestCurrency(t *testing.T) {
 		value, err := FromMinor(100, "brl")
 
 		require.NoError(t, err)
-		require.Equal(t, "BRL", value.Currency())
+		require.Equal(t, "BRL", value.Currency)
 	})
 
 	t.Run("trims currency", func(t *testing.T) {
 		value, err := FromMinor(100, " BRL ")
 
 		require.NoError(t, err)
-		require.Equal(t, "BRL", value.Currency())
+		require.Equal(t, "BRL", value.Currency)
 	})
 
 	t.Run("rejects invalid currencies", func(t *testing.T) {
@@ -253,7 +253,7 @@ func TestMoney_Add(t *testing.T) {
 		result, err := left.Add(right)
 
 		require.NoError(t, err)
-		require.Equal(t, int64(1250), result.AmountMinor())
+		require.Equal(t, int64(1250), result.AmountMinor)
 		require.Equal(t, "12.50", result.String())
 	})
 
@@ -281,7 +281,7 @@ func TestMoney_Sub(t *testing.T) {
 		result, err := left.Sub(right)
 
 		require.NoError(t, err)
-		require.Equal(t, int64(750), result.AmountMinor())
+		require.Equal(t, int64(750), result.AmountMinor)
 		require.Equal(t, "7.50", result.String())
 	})
 
@@ -295,7 +295,7 @@ func TestMoney_Sub(t *testing.T) {
 		result, err := left.Sub(right)
 
 		require.NoError(t, err)
-		require.Equal(t, int64(-150), result.AmountMinor())
+		require.Equal(t, int64(-150), result.AmountMinor)
 		require.Equal(t, "-1.50", result.String())
 	})
 
@@ -375,8 +375,8 @@ func TestMoney_Negate(t *testing.T) {
 		negative, err := value.Negate()
 
 		require.NoError(t, err)
-		require.Equal(t, int64(-12345), negative.AmountMinor())
-		require.Equal(t, "BRL", negative.Currency())
+		require.Equal(t, int64(-12345), negative.AmountMinor)
+		require.Equal(t, "BRL", negative.Currency)
 		require.Equal(t, "-123.45", negative.String())
 	})
 
@@ -387,8 +387,8 @@ func TestMoney_Negate(t *testing.T) {
 		positive, err := value.Negate()
 
 		require.NoError(t, err)
-		require.Equal(t, int64(12345), positive.AmountMinor())
-		require.Equal(t, "BRL", positive.Currency())
+		require.Equal(t, int64(12345), positive.AmountMinor)
+		require.Equal(t, "BRL", positive.Currency)
 		require.Equal(t, "123.45", positive.String())
 	})
 
@@ -442,7 +442,7 @@ func TestMoney_MinInt64(t *testing.T) {
 	value, err := FromMinor(math.MinInt64, "BRL")
 	require.NoError(t, err)
 
-	require.Equal(t, int64(math.MinInt64), value.AmountMinor())
+	require.Equal(t, int64(math.MinInt64), value.AmountMinor)
 
 	require.Equal(
 		t,
