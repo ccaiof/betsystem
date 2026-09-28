@@ -8,6 +8,6 @@ type Config struct {
 
 func NewConfig() *Config {
 	return &Config{
-		DSN: os.Getenv("DATABASE_URL"),
+		DSN: os.Getenv("DB_URL"),
 	}
 }
