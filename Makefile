@@ -2,7 +2,7 @@ COMPOSE_FILE := docker/docker-compose.dev.yml
 COMPOSE := docker compose -f $(COMPOSE_FILE)
 MIGRATIONS_DIR := internal/infrastructure/migrations
 
-.PHONY: up restart down delete migrate-up migrate-down migrate-status
+.PHONY: up restart down delete migrate-up migrate-down migrate-status test test-v test-race
 
 up:
 	$(COMPOSE) up
@@ -25,3 +25,12 @@ migrate-down:
 
 migrate-status:
 	goose -dir $(MIGRATIONS_DIR) postgres "$(DB_URL)" status
+
+test:
+	bash -c 'set -a && source ./.env.test && set +a && go test ./...'
+
+test-v:
+	bash -c 'set -a && source ./.env.test && set +a && go test ./... -v'
+
+test-race:
+	bash -c 'set -a && source ./.env.test && set +a && go test ./... -race'
