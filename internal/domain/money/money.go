@@ -161,11 +161,23 @@ func (m Money) Add(other Money) (Money, error) {
 }
 
 func (m Money) Sub(other Money) (Money, error) {
-	return m.Add(other.Negate())
+	negative, err := other.Negate()
+	if err != nil {
+		return Money{}, err
+	}
+
+	return m.Add(negative)
 }
 
-func (m Money) Negate() Money {
-	return Money{amountMinor: -m.amountMinor, currency: m.currency}
+func (m Money) Negate() (Money, error) {
+	if m.amountMinor == math.MinInt64 {
+		return Money{}, ErrOverflow
+	}
+
+	return Money{
+		amountMinor: -m.amountMinor,
+		currency:    m.currency,
+	}, nil
 }
 
 func (m Money) Compare(other Money) (int, error) {
@@ -183,11 +195,19 @@ func (m Money) Compare(other Money) (int, error) {
 }
 
 func (m Money) String() string {
-	sign := ""
-	v := m.amountMinor
-	if v < 0 {
-		sign = "-"
-		v = -v
+	if m.amountMinor < 0 {
+		absolute := uint64(-(m.amountMinor + 1)) + 1
+
+		return fmt.Sprintf(
+			"-%d.%02d",
+			absolute/scale,
+			absolute%scale,
+		)
 	}
-	return fmt.Sprintf("%s%d.%02d", sign, v/scale, v%scale)
+
+	return fmt.Sprintf(
+		"%d.%02d",
+		m.amountMinor/scale,
+		m.amountMinor%scale,
+	)
 }
